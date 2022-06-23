@@ -1,18 +1,18 @@
 package br.com.zup.movieflix.register.view
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import br.com.zup.movieflix.R
 import br.com.zup.movieflix.databinding.ActivityRegisterBinding
-import br.com.zup.movieflix.home.view.HomeActivity
 import br.com.zup.movieflix.login.view.LoginActivity
-import br.com.zup.movieflix.login.viewmodel.LoginViewModel
 import br.com.zup.movieflix.register.model.RegisterModel
 import br.com.zup.movieflix.register.repository.RegisterRepository
 import br.com.zup.movieflix.register.viewmodel.RegisterViewModel
+import br.com.zup.movieflix.util.CADASTRO_FAIL
+import br.com.zup.movieflix.util.CADASTRO_OK
+import br.com.zup.movieflix.util.EQUAL_PASSWORD
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
@@ -37,12 +37,12 @@ class RegisterActivity : AppCompatActivity() {
                     if (it.authentication) {
                         Toast.makeText(
                             this,
-                            "Cadastro efetuado com sucesso, pode logar.",
+                            CADASTRO_OK,
                             Toast.LENGTH_LONG
                         ).show()
                         startActivity(Intent(this, LoginActivity::class.java))
                     } else {
-                        Toast.makeText(this, "Algo deu errado, tente novamente!", Toast.LENGTH_LONG)
+                        Toast.makeText(this, CADASTRO_FAIL, Toast.LENGTH_LONG)
                             .show()
                     }
                 }
@@ -73,7 +73,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun passwordVerification(password: String, passwordRepeat: String): Boolean {
         if (password != passwordRepeat) {
-            Toast.makeText(this, "As duas senhas devem ser iguais", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, EQUAL_PASSWORD, Toast.LENGTH_LONG).show()
         } else {
             return true
         }
