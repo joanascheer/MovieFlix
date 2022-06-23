@@ -6,7 +6,7 @@ import br.com.zup.movieflix.register.model.RegisterModel
 class RegisterRepository {
     val bancoDeDados = mutableListOf<RegisterModel>()
 
-    fun registeredUsers(user: RegisterModel): MutableList<RegisterModel> {
+    fun registeredUsers(): MutableList<RegisterModel> {
         bancoDeDados.add(
             RegisterModel(
             username = "Joana",

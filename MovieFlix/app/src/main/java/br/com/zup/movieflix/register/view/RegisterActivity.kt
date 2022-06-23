@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import br.com.zup.movieflix.R
 import br.com.zup.movieflix.databinding.ActivityRegisterBinding
 import br.com.zup.movieflix.home.view.HomeActivity
+import br.com.zup.movieflix.login.view.LoginActivity
 import br.com.zup.movieflix.login.viewmodel.LoginViewModel
 import br.com.zup.movieflix.register.model.RegisterModel
 import br.com.zup.movieflix.register.repository.RegisterRepository
@@ -15,10 +16,7 @@ import br.com.zup.movieflix.register.viewmodel.RegisterViewModel
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
-    private lateinit var nome: String
-    private lateinit var email: String
-    private lateinit var password: String
-    private lateinit var passwordRepeat: String
+    private lateinit var user: RegisterModel
     private val repository = RegisterRepository()
     private val viewModel: RegisterViewModel by lazy {
         ViewModelProvider(this)[RegisterViewModel::class.java]
@@ -29,53 +27,53 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        binding.bvLogin.setOnClickListener {
-//            recuperarDados()
-//            val register = RegisterModel(nome, email, password, passwordRepeat)
-//            viewModel.authentication(register) //verificar se item na lista
-//            viewModel.response.observe(this){
-//                if (it.authentication){
-//                    startActivity(Intent(this,HomeActivity::class.java))
-//                }
-//            }
-//        }
 
         binding.bvLogin.setOnClickListener {
-            recuperarDados()
-            val register = RegisterModel(nome, email, password, passwordRepeat)
-            if (passwordVerification(password, passwordRepeat)) {
+            val register = recuperarDados()
+            if (passwordVerification(register.password, register.passwordRepeat)) {
                 repository.registerUser(register)
                 viewModel.authentication(register)
                 viewModel.response.observe(this) {
-                    if (register.authentication) {
-                        Toast.makeText(this,"Usuário cadastrado com sucesso!",Toast.LENGTH_LONG).show()
-                        startActivity(Intent(this, HomeActivity::class.java))
+                    if (it.authentication) {
+                        Toast.makeText(
+                            this,
+                            "Cadastro efetuado com sucesso, pode logar.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        startActivity(Intent(this, LoginActivity::class.java))
                     } else {
-                        Toast.makeText(this, "Algo deu errado, tente novamente.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Algo deu errado, tente novamente!", Toast.LENGTH_LONG)
+                            .show()
                     }
                 }
             }
             cleanData()
         }
     }
+
     private fun cleanData() {
         binding.etUserNameRegister.text.clear()
         binding.etEmailRegister.text.clear()
         binding.etPasswordRegister.text.clear()
         binding.etConfirmPasswordRegister.text.clear()
     }
-    private fun recuperarDados() {
-        nome = binding.etUserNameRegister.text.toString()
-        email = binding.etEmailRegister.text.toString()
-        password = binding.etPasswordRegister.text.toString()
-        passwordRepeat = binding.etConfirmPasswordRegister.text.toString()
 
-        passwordVerification(password,passwordRepeat)
+    private fun recuperarDados(): RegisterModel {
+        user.username = binding.etUserNameRegister.text.toString()
+        user.email = binding.etEmailRegister.text.toString()
+        user.password = binding.etPasswordRegister.text.toString()
+        user.passwordRepeat = binding.etConfirmPasswordRegister.text.toString()
+        return RegisterModel(
+            user.username,
+            user.email,
+            user.password,
+            user.passwordRepeat
+        )
     }
 
     private fun passwordVerification(password: String, passwordRepeat: String): Boolean {
         if (password != passwordRepeat) {
-            Toast.makeText(this,"As duas senhas devem ser iguais",Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "As duas senhas devem ser iguais", Toast.LENGTH_LONG).show()
         } else {
             return true
         }
