@@ -1,12 +1,14 @@
 package br.com.zup.movieflix.moviedetail.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import br.com.zup.movieflix.R
+import androidx.appcompat.app.AppCompatActivity
+import br.com.zup.movieflix.databinding.ActivityMovieDetailBinding
 
 class MovieDetailActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMovieDetailBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_movie_detail)
+        binding = ActivityMovieDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
 }

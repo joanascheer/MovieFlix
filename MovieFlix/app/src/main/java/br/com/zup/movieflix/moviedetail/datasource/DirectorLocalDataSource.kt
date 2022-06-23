@@ -7,7 +7,6 @@ import br.com.zup.movieflix.TARANTINO
 import br.com.zup.movieflix.TARANTINO_INFO
 import br.com.zup.movieflix.moviedetail.model.DirectorModel
 
-
 class DirectorLocalDataSource {
     val directorList = mutableListOf<DirectorModel>(
         DirectorModel(
