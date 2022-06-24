@@ -1,6 +1,5 @@
 package br.com.zup.movieflix.register.repository
 
-import android.widget.Toast
 import br.com.zup.movieflix.register.model.RegisterModel
 
 class RegisterRepository {

@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import br.com.zup.movieflix.databinding.ActivityRegisterBinding
 import br.com.zup.movieflix.home.view.HomeActivity
 import br.com.zup.movieflix.register.model.RegisterModel
-import br.com.zup.movieflix.register.repository.RegisterRepository
 import br.com.zup.movieflix.register.viewmodel.RegisterViewModel
 import br.com.zup.movieflix.util.*
 
@@ -29,9 +28,10 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun verifyEmail() : Boolean{
+    private fun verifyEmail(): Boolean {
         return if (binding.etEmailRegister.text.contains("@") &&
-                binding.etEmailRegister.text.contains(".com")) {
+            binding.etEmailRegister.text.contains(".com")
+        ) {
             true
         } else {
             binding.etEmailRegister.error = INVALID_EMAIL
@@ -68,7 +68,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun invalidEmailMessage() {
-        Toast.makeText(this, INVALID_EMAIL,Toast.LENGTH_LONG).show()
+        Toast.makeText(this, INVALID_EMAIL, Toast.LENGTH_LONG).show()
     }
 
     private fun invalidPasswordMessage() {
@@ -106,7 +106,7 @@ class RegisterActivity : AppCompatActivity() {
         return true
     }
 
-    private fun verifyPassword() : Boolean{
+    private fun verifyPassword(): Boolean {
         when {
             binding.etPasswordRegister.text.contentEquals(binding.etConfirmPasswordRegister.text) ->
                 return true
