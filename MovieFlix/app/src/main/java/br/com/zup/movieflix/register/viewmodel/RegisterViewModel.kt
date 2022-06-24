@@ -12,34 +12,11 @@ class RegisterViewModel: ViewModel() {
     private var _response: MutableLiveData<RegisterModel> = MutableLiveData()
     val response: LiveData<RegisterModel> = _response
 
-    fun authentication(user: RegisterModel) {
+    fun authentication(registeredUser: RegisterModel){
         try {
-            _response.value = authenticate(user)
-        }catch (ex: Exception){
-            Log.i("Error", "------> ${ex.message}")
+            _response.value = repository.verifyData(registeredUser)
+        }catch (e: Exception){
+            Log.i("Error", "------> ${e.message}")
         }
     }
-
-    //verifico se o usuario esta na lista.
-    private fun authenticate(user: RegisterModel) : RegisterModel {
-        try {
-            if (repository.bancoDeDados.contains(user)) {
-                user.authentication = true
-            }
-        } catch (e:Exception) {
-            Log.i("Error","----> ${e.message}")
-        }
-
-        return user
-    }
-
-//    fun verifyRegisteredUsers (user: RegisterModel):Boolean {
-//        try{
-//            _response.value = repository.registeredUsers(user)
-//            return true
-//        } catch (e: Exception) {
-//            Log.i("Error","----> ${e.message}")
-//        }
-//        return false
-//    }
 }
