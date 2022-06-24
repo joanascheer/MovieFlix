@@ -25,10 +25,21 @@ class RegisterActivity : AppCompatActivity() {
 
         binding.bvLogin.setOnClickListener {
             observables()
+            cleanInsertedData()
         }
     }
 
-    fun getUserData(): RegisterModel {
+    private fun verifyEmail() : Boolean{
+        return if (binding.etEmailRegister.text.contains("@") &&
+                binding.etEmailRegister.text.contains(".com")) {
+            true
+        } else {
+            binding.etEmailRegister.error = INVALID_EMAIL
+            false
+        }
+    }
+
+    private fun getUserData(): RegisterModel {
         return RegisterModel(
             username = binding.etUserNameRegister.text.toString(),
             email = binding.etEmailRegister.text.toString(),
@@ -40,12 +51,28 @@ class RegisterActivity : AppCompatActivity() {
         viewModel.authentication(getUserData())
         viewModel.response.observe(this) {
             if (authenticateFields()) {
-                enterHomeActivity()
+                if (verifyPassword()) {
+                    if (verifyEmail()) {
+                        enterHomeActivity()
+                    } else {
+                        invalidEmailMessage()
+                    }
+                } else {
+                    invalidPasswordMessage()
+                }
             } else {
                 failMessage()
             }
-            cleanInsertedData()
         }
+
+    }
+
+    private fun invalidEmailMessage() {
+        Toast.makeText(this, INVALID_EMAIL,Toast.LENGTH_LONG).show()
+    }
+
+    private fun invalidPasswordMessage() {
+        Toast.makeText(this, EQUAL_PASSWORD, Toast.LENGTH_LONG).show()
     }
 
     private fun sucessMessage() {
@@ -75,13 +102,16 @@ class RegisterActivity : AppCompatActivity() {
                 binding.etPasswordRegister.error = INVALID_PASSWORD
                 return false
             }
-            !binding.etPasswordRegister.text.contentEquals(binding.etConfirmPasswordRegister.text) -> {
-                binding.etPasswordRegister.error = INVALID_KEYS
-                binding.etConfirmPasswordRegister.error = INVALID_KEYS
-                return false
-            }
         }
         return true
+    }
+
+    private fun verifyPassword() : Boolean{
+        when {
+            binding.etPasswordRegister.text.contentEquals(binding.etConfirmPasswordRegister.text) ->
+                return true
+        }
+        return false
     }
 
     private fun cleanInsertedData() {
