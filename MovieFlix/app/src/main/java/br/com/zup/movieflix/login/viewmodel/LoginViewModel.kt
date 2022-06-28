@@ -9,6 +9,7 @@ import br.com.zup.movieflix.login.repository.LoginRepository
 
 class LoginViewModel : ViewModel() {
     private val repository = LoginRepository()
+    // o tipo que minha tela vai consumir
     private var _response: MutableLiveData<LoginModel> = MutableLiveData()
     val response: LiveData<LoginModel> = _response
 
