@@ -3,21 +3,28 @@ package br.com.zup.movieflix.moviedetail.viewmodel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import br.com.zup.movieflix.moviedetail.model.DirectorModel
+import androidx.lifecycle.ViewModel
+import br.com.zup.movieflix.home.model.Movie
+import br.com.zup.movieflix.moviedetail.datasource.DirectorLocalDataSource
+import br.com.zup.movieflix.moviedetail.model.MovieWithDirectorModel
 import br.com.zup.movieflix.moviedetail.repository.MovieDetailRepository
 
-class MovieDetailViewModel {
-    private val repository = MovieDetailRepository()
-    private val _response: MutableLiveData<List<DirectorModel>> = MutableLiveData()
-    val response: LiveData<List<DirectorModel>> = _response
+class MovieDetailViewModel : ViewModel() {
+    private val repository  = MovieDetailRepository(DirectorLocalDataSource())
+    private var _response : MutableLiveData<MovieWithDirectorModel> = MutableLiveData()
+    val response : LiveData<MovieWithDirectorModel> = _response
 
-    fun getData(director: DirectorModel) {
+//    private var _favorite : MutableLiveData<Boolean> = MutableLiveData()
+//    val favorite : LiveData<Boolean> = _favorite
+
+    fun getMovieWithDirector(movie: Movie){
         try {
-            _response.value = repository.getDirectorData(director)
-        } catch (e:Exception) {
-            Log.i("Error", "------> ${e.message}")
+            _response.value = repository.getMovieWithDirector(movie)
+//            _favorite.value = repository.getFavStatus(movie)
+        }catch (e:Exception){
+            Log.e("Erro", e.message.toString())
         }
+
     }
 
-    //ponte entre view e model
 }

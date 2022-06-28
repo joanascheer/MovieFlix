@@ -8,5 +8,6 @@ data class Movie(
     var title: String,
     var sinopse: String,
     var image: Int,
-    var director:String
+    var director:String,
+    var favorite: Boolean = false
 ) : Parcelable
